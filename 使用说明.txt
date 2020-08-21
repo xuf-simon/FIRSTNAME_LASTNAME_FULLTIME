@@ -1,10 +1,15 @@
-该程序是基于C++11 QT编写的程序
+1.该程序是基于C++11 QT编写的程序
 
-配置文件在文件夹config中，AGVSetting.ini 和 TaskSetting.ini分别写小车上线点设置，任务起终点设置
+2. 起始点和目标点应该满足：
+X<=10 && X>= 0 
+Y<=10 && Y>=0
+X,Y属于整数
+
+3. 配置文件在文件夹config中，AGVSetting.ini 和 TaskSetting.ini分别写小车上线点设置，任务起终点设置
 需要保持AGV的起始点和任务的起始点一致，本程序未其他路线处理。
 
 
-路径规划算法使用的是A*算法，具体流程如下：
+4. 路径规划算法使用的是A*算法，具体流程如下：
 1. 初始化openTable和closeTable； 
 2. 将起点加入openTable中，并设置优先级为0（优先级最高）；
 3. 如果openTable不为空，则从openTable中选取优先级最高的节点n：
