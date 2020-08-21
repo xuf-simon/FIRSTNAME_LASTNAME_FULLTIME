@@ -154,7 +154,13 @@ uint16_t AgvManage::getNextTargetNode() noexcept
 
     NodeInfo* nodeInfo = m_taskNodeInfo->taskNodeDeque[0];
     uint16_t nextNodeNum = nodeInfo->id;
-    m_taskNodeInfo->taskNodeDeque.pop_front();
+
+    if(m_agvCurrentState.currentCodeNum == nextNodeNum)
+    {
+        m_taskNodeInfo->taskNodeDeque.pop_front(); // É¾³ıµ±Ç°µã
+        nodeInfo = m_taskNodeInfo->taskNodeDeque[0];
+        nextNodeNum = nodeInfo->id;
+    }
 
     m_currentTaskChanged = false;
 
