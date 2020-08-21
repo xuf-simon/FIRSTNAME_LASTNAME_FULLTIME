@@ -1,3 +1,27 @@
+/**
+  *
+  *A*算法步骤：
+  *
+  *1. 初始化openTable和closeTable；
+  *2. 将起点加入openTable中，并设置优先级为0（优先级最高）；
+  *3. 如果openTable不为空，则从openTable中选取优先级最高的节点n：
+  *4. 如果节点n为终点，则：
+  *5. 从终点开始逐步追踪parent节点，一直达到起点；
+  *6. 返回找到的结果路径，算法结束；
+  *7. 如果节点n不是终点，则：
+  *8. 将节点n从openTable中删除，并加入closeTable中；
+  *9. 遍历节点n所有的邻近节点：
+  *10. 如果邻近节点m在closeTable中，则：
+  *11. 跳过，选取下一个邻近节点
+  *12. 如果邻近节点m也不在openTable中，则：
+  *13. 设置节点m的parent为节点n
+  *14. 计算节点m的优先级
+  *15. 将节点m加入openTable中,回到步骤3
+  *
+  *
+ **/
+
+
 #include "astar.h"
 #include <iostream>
 #include <QDebug>
