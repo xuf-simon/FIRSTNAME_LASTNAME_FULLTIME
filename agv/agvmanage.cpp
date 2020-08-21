@@ -8,9 +8,9 @@ AgvManage::AgvManage(uint16_t agvId, const AgvParameter& paramater)
     ,m_startPositionY(paramater.loginPosY)
     ,m_angle(paramater.loginAngle)
     ,m_paramater(paramater)
+    ,m_taskNodeInfo(nullptr)
     ,m_currentTaskChanged(false)
     ,m_isRunning(false)
-    ,m_taskNodeInfo(nullptr)
 {
     m_agvCurrentState.agv_Id = agvId;
     m_agvCurrentState.isOnline = false;
@@ -21,6 +21,8 @@ AgvManage::AgvManage(uint16_t agvId, const AgvParameter& paramater)
 
 
     m_nodeInfoMap = MapManege::getInstance()->getNodeInfoMap();
+
+    m_agent = new Agent(agvId);
 
 }
 
@@ -37,6 +39,7 @@ AgvManage::~AgvManage()
 void AgvManage::setTaskInfo(TaskNodeInfo* taskNodeInfo) noexcept
 {
     m_taskNodeInfo = taskNodeInfo;
+    m_agent->setPathSeriesDq(taskNodeInfo->taskNodeDeque);
 }
 
 void AgvManage::onLine() noexcept
@@ -63,6 +66,9 @@ void AgvManage::run() noexcept
 
     while (m_isRunning)
     {
+        qDebug() << "CurrentState>>>>>>>>>  " << "agvId:" << m_agvCurrentState.agv_Id
+            << "pox:" << m_agvCurrentState.posX << "poy:" << m_agvCurrentState.posY;
+
         if(m_taskNodeInfo == nullptr)
         {
             QThread::msleep(AgvParameter::TimeStep);
@@ -104,9 +110,11 @@ void AgvManage::run() noexcept
                     m_agvCurrentState.posY += walkDistance * sin(3.1415927 * agvRunAngle / 180);
                 }
 
-                qDebug() << "agvId:" << m_agvCurrentState.agv_Id
+                m_chart->move(m_agvCurrentState.agv_Id, m_agvCurrentState.posX, m_agvCurrentState.posY);
+
+                qDebug() << "CurrentState>>>>>>>>>  " << "agvId:" << m_agvCurrentState.agv_Id
                     << "pox:" << m_agvCurrentState.posX << "poy:" << m_agvCurrentState.posY
-                    << "diatance:" << diatance << "walkDistance:" << walkDistance;
+                    << "walkDistance:" << walkDistance;
 
                 if(diatance < walkDistance)//判断是否到达节点
                 {
@@ -143,8 +151,10 @@ void AgvManage::setTaskState(bool isChanged) noexcept
 
 uint16_t AgvManage::getNextTargetNode() noexcept
 {
-    uint16_t nextNodeNum = m_taskNodeInfo->taskNodeList.front();
-    m_taskNodeInfo->taskNodeList.remove(nextNodeNum);
+
+    NodeInfo* nodeInfo = m_taskNodeInfo->taskNodeDeque[0];
+    uint16_t nextNodeNum = nodeInfo->id;
+    m_taskNodeInfo->taskNodeDeque.pop_front();
 
     m_currentTaskChanged = false;
 
@@ -170,4 +180,9 @@ uint16_t AgvManage::getNextTargetNode() noexcept
 
 
     return nextNodeNum;
+}
+
+void AgvManage::setChart(Chart *chart) noexcept
+{
+    m_chart = chart;
 }

@@ -19,6 +19,8 @@ public:
 
     std::list<uint16_t> getPathList() noexcept;
 
+    std::deque<NodeInfo*> getPathDeque() noexcept;
+
     void setNodeMap(NodeInfo* nodeMaps) noexcept;
 
     void nodeInfocopy(NodeInfo f_nodeInfo, NodeInfo& b_nodeInfo) noexcept;
@@ -35,6 +37,8 @@ private:
     NodeInfo m_endNode;
 
     NodeInfo nodeMap[ROW+1][COLUMN+1];
+
+    deque<NodeInfo*> m_pathSeriesDq;
 
 
 

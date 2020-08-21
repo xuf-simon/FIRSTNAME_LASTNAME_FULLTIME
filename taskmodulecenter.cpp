@@ -71,7 +71,7 @@ void TaskModuleCenter::getTask() noexcept
 
 }
 
-void TaskModuleCenter::createTask() noexcept
+void TaskModuleCenter::createTask(Chart *chart) noexcept
 {
     auto task_it = m_taskMap.begin();
 
@@ -84,19 +84,21 @@ void TaskModuleCenter::createTask() noexcept
 
         TaskNodeInfo* taskNodeInfo = new  TaskNodeInfo();
         taskNodeInfo->m_targetNodeNum = taskManege->getDsetNode().id;
-        taskNodeInfo->taskNodeList = taskManege->commulatePath();
+        taskNodeInfo->taskNodeDeque = taskManege->commulatePath();
 
 
-        std::list<uint16_t> taskNodeList = taskNodeInfo->taskNodeList;
-        taskNodeInfo->m_agvRunDirection = getTaskNodeAngle(taskNodeList);
+
+        std::deque<NodeInfo*> taskNodeDeque = taskNodeInfo->taskNodeDeque;
+        taskNodeInfo->m_agvRunDirection = getTaskNodeAngle(taskNodeDeque);
 
         m_taskNodeMap[task_it->first] = taskNodeInfo;
-
 
         auto m_AgvMap = m_agvModuleCenter.getAgvMap();
 
         AgvManage* agvManege = m_AgvMap[agvId];
         agvManege->setTaskInfo(taskNodeInfo);
+        chart->createAgent(agvManege->getAgent());
+        agvManege->setChart(chart);
 
         std::thread th(&AgvManage::onLine, agvManege);
         th.detach();
@@ -106,20 +108,17 @@ void TaskModuleCenter::createTask() noexcept
 
 }
 
-float TaskModuleCenter::getTaskNodeAngle(std::list<uint16_t> taskNodeList) noexcept
+float TaskModuleCenter::getTaskNodeAngle(std::deque<NodeInfo*> taskNodeDeque) noexcept
 {
     float angle = 0;
 
-    auto first_it = taskNodeList.begin();
-    uint16_t startId = *first_it;
-    first_it++;
-    uint16_t secondId = *first_it;
+    auto first_it = taskNodeDeque.begin();
 
-    float startx = m_nodeInfoMap[startId]->posX;
-    float starty = m_nodeInfoMap[startId]->posY;
+    float startx = taskNodeDeque[0]->posX;
+    float starty = taskNodeDeque[0]->posY;
 
-    float secondx = m_nodeInfoMap[secondId]->posX;
-    float secondy = m_nodeInfoMap[secondId]->posY;
+    float secondx = taskNodeDeque[1]->posX;
+    float secondy = taskNodeDeque[1]->posY;
 
 
     if(startx - secondx < 0)

@@ -2,6 +2,8 @@
 #define AGVSTATE_H
 
 #include <QObject>
+#include <deque>
+#include "MapStructure.h"
 
 typedef struct
 {
@@ -50,7 +52,7 @@ public:
         m_agvRunDirection = taskNodeInfo.m_agvRunDirection;
         m_maxSpeed = taskNodeInfo.m_maxSpeed;
         m_distance = taskNodeInfo.m_distance;
-        taskNodeList = taskNodeInfo.taskNodeList;
+        taskNodeDeque = taskNodeInfo.taskNodeDeque;
     }
 
     uint16_t m_targetNodeNum; // 目标站点号
@@ -61,7 +63,7 @@ public:
     float m_maxSpeed; // 该路段速度
     float m_distance; // 该路段距离
 
-    std::list<uint16_t> taskNodeList;
+    std::deque<NodeInfo*> taskNodeDeque;
 };
 
 

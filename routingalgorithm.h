@@ -21,8 +21,6 @@ private:
 
     AStar* m_aStar;
 
-    MapManege* m_mapManage;
-
 };
 
 #endif // ROUTINGALGORITHM_H

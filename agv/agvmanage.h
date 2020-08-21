@@ -5,6 +5,8 @@
 #include "AgvState.h"
 #include <QThread>
 #include "mapmanege.h"
+#include "agent.h"
+#include "chart.h"
 
 class AgvManage
 {
@@ -25,6 +27,10 @@ public:
 
     uint16_t getNextTargetNode() noexcept;
 
+    Agent* getAgent() noexcept {return m_agent;}
+
+    void setChart(Chart* chart) noexcept;
+
 private:
     uint16_t m_agvId;
     float m_startPositionX;
@@ -43,6 +49,9 @@ private:
     std::future<void> m_agvRun_futrue;
 
     std::mutex m_mutexAgvRun;
+
+    Agent* m_agent;
+    Chart* m_chart;
 
 };
 

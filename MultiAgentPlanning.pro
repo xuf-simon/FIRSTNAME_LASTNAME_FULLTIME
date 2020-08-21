@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -23,15 +23,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     astar.cpp \
+    chart.cpp \
     main.cpp \
-    mainwindow.cpp \
     routingalgorithm.cpp \
     taskmanage.cpp \
     taskmodulecenter.cpp
 
 HEADERS += \
     astar.h \
-    mainwindow.h \
+    chart.h \
     routingalgorithm.h \
     taskmanage.h \
     taskmodulecenter.h

@@ -6,6 +6,7 @@
 #include "taskmanage.h"
 #include "AgvState.h"
 #include "agvmodulecenter.h"
+#include "chart.h"
 
 class TaskModuleCenter
 {
@@ -15,11 +16,11 @@ public:
 
     void getTask() noexcept;
 
-    void createTask() noexcept;
+    void createTask(Chart *chart) noexcept;
 
 private:
 
-    float getTaskNodeAngle(std::list<uint16_t> taskNodeList) noexcept;
+    float getTaskNodeAngle(std::deque<NodeInfo*> taskNodeDeque) noexcept;
 
     std::map<uint16_t, TaskManage*> m_taskMap;
     std::map<uint16_t, TaskNodeInfo*> m_taskNodeMap;

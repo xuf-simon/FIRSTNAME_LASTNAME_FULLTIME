@@ -218,6 +218,26 @@ std::list<uint16_t> AStar::getPathList() noexcept
     return pathList;
 }
 
+std::deque<NodeInfo *> AStar::getPathDeque() noexcept
+{
+    m_pathSeriesDq.clear();
+    deque<NodeInfo*> dq;
+    NodeInfo* p = &nodeMap[m_endNode.posX][m_endNode.posY];
+    while(!(p->posX==m_startNode.posX && p->posY==m_startNode.posY))
+    {
+        dq.push_back(p);
+        p=p->father;
+    }
+    dq.push_back(p);
+
+    for(int i=dq.size()-1; i>=0; i--)
+    {
+        m_pathSeriesDq.push_back(dq[i]);
+    }
+
+    return m_pathSeriesDq;
+}
+
 void AStar::setNodeMap(NodeInfo* nodeMaps) noexcept
 {
 

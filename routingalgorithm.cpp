@@ -3,7 +3,7 @@
 RoutingAlgorithm::RoutingAlgorithm()
     :m_aStar(new AStar)
 {
-    m_mapManage = MapManege::getInstance();
+
 }
 
 RoutingAlgorithm::~RoutingAlgorithm()
@@ -22,7 +22,7 @@ void RoutingAlgorithm::init(NodeInfo startNode, NodeInfo destNode) noexcept
     {
         for(int j = 0; j <= COLUMN ; j++)
         {
-            nodeMap[i][j] = m_mapManage->nodeMap[i][j];
+            nodeMap[i][j] = MapManege::getInstance()->nodeMap[i][j];
             nodeMap[i][j].hvalue = (abs(i-destNode.posX)+abs(j-destNode.posY)) * validLength;
         }
 
